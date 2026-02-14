@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webfront
+  labels:
+    app: webfront
+spec:
+  selector:
+    matchLabels:
+      app: webfront
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: webfront
+    spec:
+      containers:
+      - name: webfront
+        image: northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/webfront:$SHORT_SHA
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: webfront
+  labels:
+    app: webfront
+spec:
+  type: LoadBalancer
+  selector:
+    app: webfront
+  ports:
+  - protocol: TCP
+    port: 80
+    name: http
+    targetPort: 8080
+

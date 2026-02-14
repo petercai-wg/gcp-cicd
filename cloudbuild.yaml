@@ -3,7 +3,7 @@ steps:
 - name: 'ubuntu'
   script: |
     #!/usr/bin/env bash
-    echo "hello"
+    echo "hello Cloud Build "
 
 # This step builds the container image.
 # The PROJECT_ID and SHORT_SHA variables are automatically replaced by Cloud Build.
@@ -15,10 +15,33 @@ steps:
 # This step pushes the image to Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
   id: Push
-  args:
-  - 'push'
-  - 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/webfront:$SHORT_SHA'
+  args: ['push', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/webfront:$SHORT_SHA']
 
+- name: 'gcr.io/cloud-builders/docker'
+  id: Build
+  args: ['build', '-t', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/stockmanager:$SHORT_SHA', './spring-docker/stockmanager' ]
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: Push
+  args: ['push', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/stockmanager:$SHORT_SHA']
+  
+- name: 'gcr.io/cloud-builders/docker'
+  id: Build
+  args: ['build', '-t', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/productcatalogue:$SHORT_SHA', './spring-docker/productcatalogue' ]
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: Push
+  args: ['push', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/productcatalogue:$SHORT_SHA']  
+
+
+# This step deploys the new version of our container image
+# in the hello-cloudbuild Kubernetes Engine cluster.
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: Deploy
+  args: ['apply', '-f', 'kubernetes.yaml']
+  env:
+  - 'CLOUDSDK_COMPUTE_REGION=northamerica-northeast2'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
 
 options:
   logging: CLOUD_LOGGING_ONLY
