@@ -22,15 +22,10 @@ public class ProductService {
         productDAO.put("3", new Product("3", "Anvil", "Large Anvils", new BigDecimal("45.50")));
         productDAO.put("4", new Product("4", "Cogs", "Grade Y cogs", new BigDecimal("1.80")));
         productDAO.put("5", new Product("5", "Multitool", "Multitools", new BigDecimal("154.10")));
-        try {
-            InetAddress localHost = InetAddress.getLocalHost();
-            String hostName = localHost.getHostName();
-            String hostAddress = localHost.getHostAddress();
-            productDAO.values().forEach(product -> product.setLocation(hostName + " (" + hostAddress + ")"));
-        } catch (Exception e) {
-            log.warn("Unable to set product location: " + e.getMessage());
+        String hostInfo = getHostname();
+        for (Product product : productDAO.values()) {
+            product.setLocation(hostInfo);
         }
-
     }
 
     public List<Product> getAllProducts() {
@@ -38,6 +33,24 @@ public class ProductService {
     }
 
     public Optional<Product> getProduct(String id) {
-        return Optional.ofNullable(productDAO.get(id));
+        String hostInfo = getHostname();
+        log.info("Fetching product with ID: {} from host: {}", id, hostInfo);
+        Product product = productDAO.get(id);
+        if (product != null) {
+            product.setLocation(hostInfo);
+        }
+        return Optional.ofNullable(product);
     }
+
+    public String getHostname() {
+        try {
+            InetAddress localHost = InetAddress.getLocalHost();
+            String hostName = localHost.getHostName();
+            String hostAddress = localHost.getHostAddress();
+            return hostName + " (" + hostAddress + ")";
+        } catch (Exception e) {
+            return "Unable to get hostname: " + e.getMessage();
+        }
+    }
+
 }

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: productcatalogue
-        image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/productcatalogue@sha256:{COMMIT_SHA}
+        image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/productcatalogue:{COMMIT_SHA}
         ports:
         - containerPort: 8080
         env:
@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
       - name: stockmanager
-        image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/stockmanager@sha256:{COMMIT_SHA}
+        image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/stockmanager:{COMMIT_SHA}
         ports:
         - containerPort: 8080
         env:
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: webfront
-        image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/webfront@sha256:{COMMIT_SHA}
+        image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/webfront:{COMMIT_SHA}
         ports:
         - containerPort: 8080
         env:
