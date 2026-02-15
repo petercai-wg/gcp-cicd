@@ -3,7 +3,7 @@ steps:
 - name: 'ubuntu'
   script: |
     #!/usr/bin/env bash
-    echo "hello Cloud Build "
+    echo "start Cloud Build "
 
 # This step builds the container image.
 # The PROJECT_ID and SHORT_SHA variables are automatically replaced by Cloud Build.
@@ -17,6 +17,11 @@ steps:
   id: Pushwebfront
   args: ['push', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/webfront:$SHORT_SHA']
 
+- name: 'ubuntu'
+  script: |
+    #!/usr/bin/env bash
+    echo "Push webfront image to Artifact Registry ${SHORT_SHA} "  
+
 - name: 'gcr.io/cloud-builders/docker'
   id: Buildstockmanager
   args: ['build', '-t', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/stockmanager:$SHORT_SHA', './spring-docker/stockmanager' ]
@@ -24,6 +29,11 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   id: Pushstockmanager
   args: ['push', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/stockmanager:$SHORT_SHA']
+
+- name: 'ubuntu'
+  script: |
+    #!/usr/bin/env bash
+    echo "Push Pushstockmanager image to Artifact Registry ${SHORT_SHA} "    
   
 - name: 'gcr.io/cloud-builders/docker'
   id: Buildproductcatalogue
@@ -33,15 +43,34 @@ steps:
   id: Pushproductcatalogue
   args: ['push', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/productcatalogue:$SHORT_SHA']  
 
+- name: 'ubuntu'
+  script: |
+    #!/usr/bin/env bash
+    echo "Push productcatalogue image to Artifact Registry ${SHORT_SHA} " 
+    
+# This step generates the new manifest
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Generate manifest
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+     sed "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" kubernetes.template | \
+     sed "s/{COMMIT_SHA}/${SHORT_SHA}/g" > kubernetes.yaml
+
+- name: 'ubuntu'
+  script: |
+    #!/usr/bin/env bash
+    cat kubernetes.yaml
 
 # This step deploys the new version of our container image
 # in the hello-cloudbuild Kubernetes Engine cluster.
-- name: 'gcr.io/cloud-builders/kubectl'
-  id: DeployGKE
-  args: ['apply', '-f', 'kubernetes.yaml']
-  env:
-  - 'CLOUDSDK_COMPUTE_REGION=northamerica-northeast2'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
+# - name: 'gcr.io/cloud-builders/kubectl'
+#   id: DeployGKE
+#   args: ['apply', '-f', 'kubernetes.yaml']
+#   env:
+#   - 'CLOUDSDK_COMPUTE_REGION=northamerica-northeast2'
+#   - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
 
 options:
   logging: CLOUD_LOGGING_ONLY
