@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: productcatalogue
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: productcatalogue
-        image: us-central1-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-us-repo/productcatalogue:{COMMIT_SHA}
+        image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/productcatalogue:{COMMIT_SHA}
         ports:
         - containerPort: 8080
         env:
@@ -52,7 +52,7 @@ spec:
   selector:
     matchLabels:
       app: stockmanager
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels:
@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
       - name: stockmanager
-        image: us-central1-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-us-repo/stockmanager:{COMMIT_SHA}
+        image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/stockmanager:{COMMIT_SHA}
         ports:
         - containerPort: 8080
         env:
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: webfront
-        image: us-central1-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-us-repo/webfront:{COMMIT_SHA}
+        image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/webfront:{COMMIT_SHA}
         ports:
         - containerPort: 8080
         env:
