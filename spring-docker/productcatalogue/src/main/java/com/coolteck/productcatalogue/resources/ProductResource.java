@@ -25,7 +25,7 @@ public class ProductResource {
 
     @GetMapping("/health")
     public String healthCheck() {
-        return "OK";
+        return "OK \n";
     }
 
     @GetMapping("/products")

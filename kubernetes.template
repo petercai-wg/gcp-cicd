@@ -106,12 +106,23 @@ spec:
         image: northamerica-northeast2-docker.pkg.dev/{GOOGLE_CLOUD_PROJECT}/my-repository/webfront:{COMMIT_SHA}
         ports:
         - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /health
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 5
         env:
         - name: WEBFRONT_PORT
           value: "8080"
         - name: productCatalogueUri
-          value: "http://productcatalogue:8080"
+          value: "http://productcatalogue:8020"
         - name: stockManagerUri
-          value: "http://stockmanager:8080"
+          value: "http://stockmanager:8030"
 
+      securityContext:    # explicitly grant container the permission to use raw network sockets, like ping
+        capabilities:
+        add: ["NET_RAW"]
 

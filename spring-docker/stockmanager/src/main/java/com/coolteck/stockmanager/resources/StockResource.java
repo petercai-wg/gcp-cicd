@@ -35,7 +35,7 @@ public class StockResource {
 
     @GetMapping("/health")
     public String healthCheck() {
-        return "OK";
+        return "OK \n";
     }
 
     @RequestMapping("/stocks")

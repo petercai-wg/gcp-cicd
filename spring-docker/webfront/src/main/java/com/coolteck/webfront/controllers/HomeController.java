@@ -33,7 +33,7 @@ public class HomeController {
     @GetMapping("health")
     @ResponseBody
     public String healthCheck() {
-        return "OK";
+        return "OK \n";
     }
 
     @GetMapping("host")
