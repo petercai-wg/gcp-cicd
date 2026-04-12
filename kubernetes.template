@@ -110,8 +110,8 @@ spec:
         - name: WEBFRONT_PORT
           value: "8080"
         - name: productCatalogueUri
-          value: "http://34.130.11.211:32080"
+          value: "http://productcatalogue:8080"
         - name: stockManagerUri
-          value: "http://34.130.11.211:30308"
+          value: "http://stockmanager:8080"
 
 

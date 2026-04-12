@@ -68,8 +68,8 @@ steps:
   id: DeployGKE
   args: ['apply', '-f', 'kubernetes.yaml']
   env:
-  - 'CLOUDSDK_COMPUTE_REGION=northamerica-northeast2'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
+  - 'CLOUDSDK_COMPUTE_REGION=us-central1'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=my-auto-cluster'
 
 options:
   logging: CLOUD_LOGGING_ONLY
