@@ -10,12 +10,12 @@ steps:
 
 - name: 'gcr.io/cloud-builders/docker'
   id: Buildwebfront
-  args: ['build', '-t', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/webfront:$SHORT_SHA', './spring-docker/webfront' ]
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-us-repo/webfront:$SHORT_SHA', './spring-docker/webfront' ]
 
 # This step pushes the image to Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
   id: Pushwebfront
-  args: ['push', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/webfront:$SHORT_SHA']
+  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-us-repo/webfront:$SHORT_SHA']
 
 - name: 'ubuntu'
   script: |
@@ -24,11 +24,11 @@ steps:
 
 - name: 'gcr.io/cloud-builders/docker'
   id: Buildstockmanager
-  args: ['build', '-t', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/stockmanager:$SHORT_SHA', './spring-docker/stockmanager' ]
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-us-repo/stockmanager:$SHORT_SHA', './spring-docker/stockmanager' ]
 
 - name: 'gcr.io/cloud-builders/docker'
   id: Pushstockmanager
-  args: ['push', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/stockmanager:$SHORT_SHA']
+  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-us-repo/stockmanager:$SHORT_SHA']
 
 - name: 'ubuntu'
   script: |
@@ -37,11 +37,11 @@ steps:
   
 - name: 'gcr.io/cloud-builders/docker'
   id: Buildproductcatalogue
-  args: ['build', '-t', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/productcatalogue:$SHORT_SHA', './spring-docker/productcatalogue' ]
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-us-repo/productcatalogue:$SHORT_SHA', './spring-docker/productcatalogue' ]
 
 - name: 'gcr.io/cloud-builders/docker'
   id: Pushproductcatalogue
-  args: ['push', 'northamerica-northeast2-docker.pkg.dev/$PROJECT_ID/my-repository/productcatalogue:$SHORT_SHA']  
+  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-us-repo/productcatalogue:$SHORT_SHA']  
 
 - name: 'ubuntu'
   script: |
