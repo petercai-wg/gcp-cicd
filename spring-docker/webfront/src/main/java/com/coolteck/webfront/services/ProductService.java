@@ -11,8 +11,10 @@ import com.coolteck.webfront.services.dto.StockDTO;
 import java.net.InetAddress;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class ProductService {
 
     @Autowired
@@ -28,6 +30,9 @@ public class ProductService {
             if (stockDTO == null) {
                 stockDTO = StockDTO.DEFAULT_STOCK_DTO;
             }
+
+            log.info("Merging product {} with stock {}", p.id(), stockDTO.productId());
+
             return new Product(p.id(), stockDTO.sku(), p.name(), p.description(), p.price(),
                     stockDTO.amountAvailable(), p.location());
         }).toList();
@@ -44,6 +49,8 @@ public class ProductService {
                     if (stockDTO == null) {
                         stockDTO = StockDTO.DEFAULT_STOCK_DTO;
                     }
+                    log.info("Merging product {} with stock {}", productDTO.id(), stockDTO.productId());
+
                     return new Product(productDTO.id(), stockDTO.sku(), productDTO.name(),
                             productDTO.description(), productDTO.price(), stockDTO.amountAvailable(),
                             productDTO.location());

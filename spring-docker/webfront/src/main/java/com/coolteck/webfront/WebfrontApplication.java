@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WebfrontApplication {
 
     public static void main(String[] args) {
+        System.out.println("Starting WebfrontApplication...");
         SpringApplication.run(WebfrontApplication.class, args);
     }
 

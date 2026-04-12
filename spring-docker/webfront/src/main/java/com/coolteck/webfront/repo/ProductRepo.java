@@ -14,8 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class ProductRepo {
 
     @Value("${productCatalogueUri}")
@@ -31,6 +33,7 @@ public class ProductRepo {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<ProductDTO>>() {
                 });
         List<ProductDTO> productDTOs = productCatalogueResponse.getBody();
+        log.info("Fetched {} products from product catalogue", productDTOs.size());
 
         return productDTOs.stream()
                 .collect(Collectors.toMap(ProductDTO::id, Function.identity()));
