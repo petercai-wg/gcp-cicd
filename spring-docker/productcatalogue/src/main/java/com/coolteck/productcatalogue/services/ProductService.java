@@ -42,9 +42,10 @@ public class ProductService {
     public Optional<Product> getProduct(String id) {
 
         Span parent = tracer.spanBuilder("process-getProduct").startSpan();
+        log.info("Tracer span process-getProduct {}", parent.getSpanContext().getSpanId());
 
         try (Scope scope = parent.makeCurrent()) {
-            log.info("get Hostname ");
+
             String hostInfo = getHostname();
 
             log.info("Fetching product with ID: {} from host: {}", id, hostInfo);
@@ -68,6 +69,7 @@ public class ProductService {
         try (Scope scope = span.makeCurrent()) {
 
             try {
+                log.info("Tracer getHostname span id {}", span.getSpanContext().getSpanId());
                 Random random = new Random();
                 int sleepTime = random.nextInt(1000);
                 Thread.sleep(sleepTime);

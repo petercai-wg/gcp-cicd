@@ -25,6 +25,6 @@ data:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [memory_limiter, batch]
-          exporters: [googlecloud, debug]
+          processors: [batch]
+          exporters: [googlecloud]
 

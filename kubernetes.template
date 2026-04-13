@@ -146,10 +146,10 @@ spec:
           value: http://otel-collector:4317
         - name: OTEL_EXPORTER_OTLP_PROTOCOL
           value: grpc
-        - name:  OTEL_TRACES_SAMPLER
-          values: always_on
+        - name: OTEL_TRACES_SAMPLER
+          value: always_on
         - name: OTEL_LOG_LEVEL
-          values: debug  
+          value: debug  
 
 ---
 
@@ -193,3 +193,6 @@ spec:
   - port: 4317
     targetPort: 4317
     name: grpc
+
+
+---
