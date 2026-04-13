@@ -58,17 +58,21 @@ steps:
      sed "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" kubernetes.template | \
      sed "s/{COMMIT_SHA}/${SHORT_SHA}/g" > kubernetes.yaml
 
-- name: 'ubuntu'
-  script: |
-    #!/usr/bin/env bash
-    cat kubernetes.yaml
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Generate otel Config
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+     sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_config.yaml  \
+      sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_sidecar_config.yaml
+
 
 - name: 'ubuntu'
   script: |
     #!/usr/bin/env bash
-    sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_config.yaml 
+    cat kubernetes.yaml
     cat otel_config.yaml
-    sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_sidecar_config.yaml 
     cat otel_sidecar_config.yaml
 
 
