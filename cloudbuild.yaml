@@ -63,6 +63,15 @@ steps:
     #!/usr/bin/env bash
     cat kubernetes.yaml
 
+- name: 'ubuntu'
+  script: |
+    #!/usr/bin/env bash
+    sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_config.yaml 
+    cat otel_config.yaml
+    sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_sidecar_config.yaml 
+    cat otel_sidecar_config.yaml
+
+
 - name: 'gcr.io/cloud-builders/kubectl'
   id: DeployOTELConfig
   args: ['apply', '-f', 'otel_config.yaml']

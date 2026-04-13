@@ -30,7 +30,8 @@ public class OpenTelemetryConfig {
 
                 // 2. Resource (service metadata)
                 Resource resource = Resource
-                                .getDefault().merge(Resource.builder().put("service.name", "My App").build());
+                                .getDefault()
+                                .merge(Resource.builder().put("service.name", "ProductCatalogService").build());
 
                 // 3. Tracer Provider
                 SdkTracerProvider tracerProvider = SdkTracerProvider.builder()

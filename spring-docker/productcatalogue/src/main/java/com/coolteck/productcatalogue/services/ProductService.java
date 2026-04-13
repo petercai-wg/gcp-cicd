@@ -63,13 +63,15 @@ public class ProductService {
 
     public String getHostname() {
 
-        Span span = tracer.spanBuilder("charge-payment").startSpan();
+        Span span = tracer.spanBuilder("getHostname").startSpan();
 
         try (Scope scope = span.makeCurrent()) {
 
             try {
                 Random random = new Random();
-                Thread.sleep(random.nextInt(1000));
+                int sleepTime = random.nextInt(1000);
+                Thread.sleep(sleepTime);
+                log.info("sleep for {} ms", sleepTime);
                 InetAddress localHost = InetAddress.getLocalHost();
                 String hostName = localHost.getHostName();
                 String hostAddress = localHost.getHostAddress();

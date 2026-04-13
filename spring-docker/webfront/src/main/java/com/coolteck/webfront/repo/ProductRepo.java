@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import com.coolteck.webfront.services.dto.ProductDTO;
+import com.coolteck.webfront.services.dto.StockDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -37,5 +38,18 @@ public class ProductRepo {
 
         return productDTOs.stream()
                 .collect(Collectors.toMap(ProductDTO::id, Function.identity()));
+    }
+
+    public ProductDTO getProductDTOByID(String id) {
+
+        ResponseEntity<ProductDTO> productCatalogueResponse = restTemplate.exchange(
+                productCatalogueUri + "/products/" + id,
+                HttpMethod.GET, null, new ParameterizedTypeReference<ProductDTO>() {
+                });
+        ProductDTO productDTO = productCatalogueResponse.getBody();
+        log.info("get from product catalogue" + productDTO);
+
+        return productDTO;
+
     }
 }

@@ -14,10 +14,17 @@ data:
 
     exporters:
       googlecloud:
+        project: {GOOGLE_CLOUD_PROJECT}
+
+    processors:
+      batch:
+        timeout: 5s
+        send_batch_size: 512        
 
     service:
       pipelines:
         traces:
           receivers: [otlp]
-          exporters: [googlecloud]
+          processors: [memory_limiter, batch]
+          exporters: [googlecloud, debug]
 

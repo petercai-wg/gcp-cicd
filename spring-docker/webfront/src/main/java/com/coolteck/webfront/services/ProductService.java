@@ -26,6 +26,11 @@ public class ProductService {
     public List<Product> listProduct() {
         Map<String, ProductDTO> productDTOs = productRepo.getProductDTOs();
         return productDTOs.values().stream().map(p -> {
+
+            ProductDTO productDTO = productRepo.getProductDTOByID(p.id());
+
+            log.info("Populating product {} ", productDTO);
+
             StockDTO stockDTO = stockRepo.getStockDTObyID(p.id());
             if (stockDTO == null) {
                 stockDTO = StockDTO.DEFAULT_STOCK_DTO;

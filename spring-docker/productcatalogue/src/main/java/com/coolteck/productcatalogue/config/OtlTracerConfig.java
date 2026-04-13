@@ -12,6 +12,6 @@ public class OtlTracerConfig {
     @Bean
     public Tracer otelTracer() {
         System.out.println("Creating OpenTelemetry Tracer bean");
-        return GlobalOpenTelemetry.getTracer("My App");
+        return GlobalOpenTelemetry.getTracer("ProductCatalogService", "1.0.0");
     }
 }

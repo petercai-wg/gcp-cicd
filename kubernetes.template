@@ -32,6 +32,8 @@ spec:
       # Telemetry Sidecar collector
       - name: otel-sidecar
         image: otel/opentelemetry-collector-contrib:latest
+        args:
+          - --config=/etc/otel/config.yaml        
         volumeMounts:
         - name: sidecar-config
           mountPath: /etc/otel
@@ -85,7 +87,7 @@ spec:
         - name: STOCK_MANAGER_PORT
           value: "8080"
         - name: OTEL_SERVICE_NAME
-          value: webfront
+          value: stockmanager
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: http://otel-collector:4317
         - name: OTEL_EXPORTER_OTLP_PROTOCOL
@@ -144,6 +146,10 @@ spec:
           value: http://otel-collector:4317
         - name: OTEL_EXPORTER_OTLP_PROTOCOL
           value: grpc
+        - name:  OTEL_TRACES_SAMPLER
+          values: always_on
+        - name: OTEL_LOG_LEVEL
+          values: debug  
 
 ---
 
@@ -164,6 +170,8 @@ spec:
       containers:
       - name: collector
         image: otel/opentelemetry-collector-contrib:latest
+        args:
+          - --config=/etc/otel/config.yaml
         volumeMounts:
         - name: config
           mountPath: /etc/otel
