@@ -60,10 +60,22 @@ steps:
 
 - name: 'gcr.io/cloud-builders/gcloud'
   id: Generate otel Config
-  script: |
-    #!/bin/sh
-    sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_config.yaml
-    sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_sidecar_config.yaml
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+     sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_config.yaml
+  automapSubstitutions: true
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Generate otel sidecar Config
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+     sed -i "s/{GOOGLE_CLOUD_PROJECT}/${PROJECT_ID}/g" otel_sidecar_config.yaml
+  automapSubstitutions: true
+   
 
 
 - name: 'ubuntu'
