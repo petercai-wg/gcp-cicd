@@ -22,6 +22,24 @@ spec:
         env:
         - name: PRODUCT_SVC_PORT
           value: "8080"
+        - name: OTEL_SERVICE_NAME
+          value: stockmanager
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://localhost:4317
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: grpc
+
+      # Telemetry Sidecar collector
+      - name: otel-sidecar
+        image: otel/opentelemetry-collector-contrib:latest
+        volumeMounts:
+        - name: sidecar-config
+          mountPath: /etc/otel
+
+      volumes:
+      - name: sidecar-config
+        configMap:
+          name: otel-sidecar-config
 
 ---
 apiVersion: v1
@@ -66,6 +84,12 @@ spec:
         env:
         - name: STOCK_MANAGER_PORT
           value: "8080"
+        - name: OTEL_SERVICE_NAME
+          value: webfront
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://otel-collector:4317
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: grpc
 
 ---
 apiVersion: v1
@@ -114,5 +138,50 @@ spec:
         - name: stockManagerUri
           value: "http://stockmanager:8030"
 
+        - name: OTEL_SERVICE_NAME
+          value: webfront
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://otel-collector:4317
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: grpc
 
+---
 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+      - name: collector
+        image: otel/opentelemetry-collector-contrib:latest
+        volumeMounts:
+        - name: config
+          mountPath: /etc/otel
+      volumes:
+      - name: config
+        configMap:
+          name: otel-collector-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+spec:
+  selector:
+    app: otel-collector
+  ports:
+  - port: 4317
+    targetPort: 4317
+    name: grpc

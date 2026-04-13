@@ -63,6 +63,21 @@ steps:
     #!/usr/bin/env bash
     cat kubernetes.yaml
 
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: DeployOTELConfig
+  args: ['apply', '-f', 'otel_config.yaml']
+  env:
+  - 'CLOUDSDK_COMPUTE_REGION=northamerica-northeast2'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=my-auto-cluster'
+
+- name: 'gcr.io/cloud-builders/kubectl'
+  id: DeploySidecarConfig
+  args: ['apply', '-f', 'otel_sidecar_config.yaml']
+  env:
+  - 'CLOUDSDK_COMPUTE_REGION=northamerica-northeast2'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=my-auto-cluster'
+
+
 # This step deploys the new version of our container image
 - name: 'gcr.io/cloud-builders/kubectl'
   id: DeployGKE
