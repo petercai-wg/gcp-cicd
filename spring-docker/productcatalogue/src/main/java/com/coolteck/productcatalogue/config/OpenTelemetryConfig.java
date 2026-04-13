@@ -9,7 +9,7 @@ import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 
 import io.opentelemetry.sdk.OpenTelemetrySdk;
-
+import io.opentelemetry.sdk.OpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 
@@ -29,7 +29,8 @@ public class OpenTelemetryConfig {
                                 .build();
 
                 // 2. Resource (service metadata)
-                Resource resource = Resource.getDefault();
+                Resource resource = Resource
+                                .getDefault().merge(Resource.builder().put("service.name", "My App").build());
 
                 // 3. Tracer Provider
                 SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
@@ -44,7 +45,7 @@ public class OpenTelemetryConfig {
                                 .build();
 
                 // 5. Register globally (important)
-                GlobalOpenTelemetry.set(openTelemetry);
+                // GlobalOpenTelemetry.set(openTelemetry);
 
                 System.out.println("Register globally OpenTelemetry ");
 

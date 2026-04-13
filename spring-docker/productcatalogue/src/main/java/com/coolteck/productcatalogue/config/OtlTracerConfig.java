@@ -1,3 +1,5 @@
+package com.coolteck.productcatalogue.config;
+
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,6 @@ public class OtlTracerConfig {
     @Bean
     public Tracer otelTracer() {
         System.out.println("Creating OpenTelemetry Tracer bean");
-        return GlobalOpenTelemetry.getTracer("com.coolteck.productcatalogue");
+        return GlobalOpenTelemetry.getTracer("My App");
     }
 }
