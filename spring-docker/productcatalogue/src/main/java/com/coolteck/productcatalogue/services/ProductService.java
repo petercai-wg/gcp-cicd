@@ -9,10 +9,17 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.net.InetAddress;
 
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.context.Scope;
+
 @Service
 public class ProductService {
 
     private static final Logger log = LoggerFactory.getLogger(ProductService.class);
+
+    Tracer tracer = GlobalOpenTelemetry.getTracer("ProductCatalogService", "1.0");
 
     private Map<String, Product> productDAO = new HashMap<>();
 
@@ -33,24 +40,48 @@ public class ProductService {
     }
 
     public Optional<Product> getProduct(String id) {
-        String hostInfo = getHostname();
-        log.info("Fetching product with ID: {} from host: {}", id, hostInfo);
-        Product product = productDAO.get(id);
-        if (product != null) {
-            product.setLocation(hostInfo);
+
+        Span parent = tracer.spanBuilder("process-getProduct").startSpan();
+
+        try (Scope scope = parent.makeCurrent()) {
+            log.info("get Hostname ");
+            String hostInfo = getHostname();
+
+            log.info("Fetching product with ID: {} from host: {}", id, hostInfo);
+            Product product = productDAO.get(id);
+            if (product != null) {
+                product.setLocation(hostInfo);
+            }
+
+            return Optional.ofNullable(product);
+
+        } finally {
+            parent.end();
         }
-        return Optional.ofNullable(product);
+
     }
 
     public String getHostname() {
-        try {
-            InetAddress localHost = InetAddress.getLocalHost();
-            String hostName = localHost.getHostName();
-            String hostAddress = localHost.getHostAddress();
-            return hostName + " (" + hostAddress + ")";
-        } catch (Exception e) {
-            return "Unable to get hostname: " + e.getMessage();
+
+        Span span = tracer.spanBuilder("charge-payment").startSpan();
+
+        try (Scope scope = span.makeCurrent()) {
+
+            try {
+                Random random = new Random();
+                Thread.sleep(random.nextInt(1000));
+                InetAddress localHost = InetAddress.getLocalHost();
+                String hostName = localHost.getHostName();
+                String hostAddress = localHost.getHostAddress();
+                return hostName + " (" + hostAddress + ")";
+            } catch (Exception e) {
+                return "Unable to get hostname: " + e.getMessage();
+            }
+
+        } finally {
+            span.end();
         }
+
     }
 
 }

@@ -13,5 +13,9 @@ WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
 
+# Download the latest opentelemetry-javaagent.jar
+RUN curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
+
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+ENTRYPOINT ["java", "-javaagent:/app/opentelemetry-javaagent.jar", "-jar","app.jar"]
