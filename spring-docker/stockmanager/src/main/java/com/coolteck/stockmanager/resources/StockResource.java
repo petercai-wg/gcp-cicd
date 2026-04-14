@@ -20,9 +20,9 @@ public class StockResource {
     @Autowired
     private StockService stockService;
 
-    @GetMapping("host")
+    @GetMapping("/host")
     public String getHostName() {
-        log.info("getHostName");
+
         try {
             InetAddress localHost = InetAddress.getLocalHost();
             String hostName = localHost.getHostName();
@@ -35,12 +35,21 @@ public class StockResource {
 
     @GetMapping("/health")
     public String healthCheck() {
+        log.info("Health check endpoint called");
         return "OK \n";
+    }
+
+    /*
+     * Some Load Balancer health check will use / as the health check endpoint.
+     */
+    @GetMapping("/")
+    public String healthResponse() {
+        log.info("StockManager  / called");
+        return "OK";
     }
 
     @RequestMapping("/stocks")
     public List<Stock> getStocks() {
-        log.info("getStocks (All stocks)");
         return stockService.getStocks();
     }
 

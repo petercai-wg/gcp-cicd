@@ -24,7 +24,17 @@ public class ProductResource {
 
     @GetMapping("/health")
     public String healthCheck() {
+        log.info("Health check endpoint called");
         return "OK \n";
+    }
+
+    /*
+     * Some Load Balancer health check will use / as the health check endpoint.
+     */
+    @GetMapping("/")
+    public String healthResponse() {
+        log.info("ProductCatalogue  / called");
+        return "OK";
     }
 
     @GetMapping("/products")
@@ -41,7 +51,7 @@ public class ProductResource {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("host")
+    @GetMapping("/host")
     public String getHostName() {
         log.info("getHostName");
         try {

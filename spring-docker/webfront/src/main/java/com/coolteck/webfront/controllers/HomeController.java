@@ -38,13 +38,13 @@ public class HomeController {
     @GetMapping("health")
     @ResponseBody
     public String healthCheck() {
+        log.info("Health check endpoint called");
         return "OK \n";
     }
 
     @GetMapping("host")
     @ResponseBody
     public String hostname() {
-        log.info("Getting hostname");
         return productService.getHostname();
     }
 
