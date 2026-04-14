@@ -38,7 +38,6 @@ public class HomeController {
     @GetMapping("health")
     @ResponseBody
     public String healthCheck() {
-        log.info("Health check endpoint called");
         return "OK \n";
     }
 

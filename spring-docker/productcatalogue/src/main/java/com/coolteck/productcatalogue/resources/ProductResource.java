@@ -24,7 +24,6 @@ public class ProductResource {
 
     @GetMapping("/health")
     public String healthCheck() {
-        log.info("Health check endpoint called");
         return "OK \n";
     }
 
@@ -33,7 +32,6 @@ public class ProductResource {
      */
     @GetMapping("/")
     public String healthResponse() {
-        log.info("ProductCatalogue  / called");
         return "OK";
     }
 
@@ -53,7 +51,7 @@ public class ProductResource {
 
     @GetMapping("/host")
     public String getHostName() {
-        log.info("getHostName");
+
         try {
             InetAddress localHost = InetAddress.getLocalHost();
             String hostName = localHost.getHostName();

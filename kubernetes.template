@@ -28,22 +28,6 @@ spec:
           value: http://localhost:4317
         - name: OTEL_EXPORTER_OTLP_PROTOCOL
           value: grpc
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
 
       
       - name: otel-sidecar   # Telemetry Sidecar collector
@@ -109,22 +93,6 @@ spec:
         - name: OTEL_EXPORTER_OTLP_PROTOCOL
           value: grpc
 
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
 
 ---
 
@@ -184,23 +152,6 @@ spec:
           value: always_on
         - name: OTEL_LOG_LEVEL
           value: debug  
-
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
 
 ---
 apiVersion: apps/v1

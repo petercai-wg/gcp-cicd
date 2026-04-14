@@ -35,7 +35,6 @@ public class StockResource {
 
     @GetMapping("/health")
     public String healthCheck() {
-        log.info("Health check endpoint called");
         return "OK \n";
     }
 
@@ -44,7 +43,6 @@ public class StockResource {
      */
     @GetMapping("/")
     public String healthResponse() {
-        log.info("StockManager  / called");
         return "OK";
     }
 

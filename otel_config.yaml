@@ -22,6 +22,9 @@ data:
         send_batch_size: 512        
 
     service:
+      telemetry:
+        logs:
+          output_paths: ["stdout"]    
       pipelines:
         traces:
           receivers: [otlp]
