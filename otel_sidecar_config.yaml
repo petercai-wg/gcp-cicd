@@ -22,12 +22,12 @@ data:
         project: {GOOGLE_CLOUD_PROJECT}
 
     service:
-      telemetry:
-        logs:
-          output_paths: ["stdout"]    
-
       pipelines:
         traces:
           receivers: [otlp]
           processors: [batch]
           exporters: [googlecloud]
+          
+      telemetry:
+        logs:
+          output_paths: [stdout]              

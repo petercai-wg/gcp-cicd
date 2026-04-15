@@ -16,10 +16,10 @@ spec:
             name: web-front-service # Points to the Service name
             port:
               number: 8080
-      - path: /stockmanager
+      - path: /host
         pathType: Prefix
         backend:
           service:
-            name: stockmanager
+            name: stockmanager  # it requests stockmanager servoce with path /host 
             port:
               number: 8030
